@@ -1,26 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCredentialDto } from './dto/create-credential.dto';
-import { UpdateCredentialDto } from './dto/update-credential.dto';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class CredentialsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createCredentialDto: CreateCredentialDto) {
-    return 'This action adds a new credential';
+  verifyTitleByUserId(userId: number, title: string) {
+    return this.prisma.credential.findFirst({ where: { title, userId } });
   }
 
-  findAll() {
-    return `This action returns all credentials`;
+  createCredential(body: CreateCredentialDto, userId: number) {
+    return this.prisma.credential.create({ data: { ...body, userId } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} credential`;
+  getCredentials(userId: number) {
+    return this.prisma.credential.findMany({ where: { userId } });
   }
 
-  update(id: number, updateCredentialDto: UpdateCredentialDto) {
-    return `This action updates a #${id} credential`;
+  getOneCredential(id: number) {
+    return this.prisma.credential.findUnique({ where: { id } });
   }
 
   remove(id: number) {

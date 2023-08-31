@@ -13,4 +13,8 @@ export class UsersRepository {
   signUp(data: CreateUserDto) {
     return this.prisma.user.create({ data });
   }
+
+  getUserById(id: number) {
+    return this.prisma.user.findUnique({ where: { id } });
+  }
 }
