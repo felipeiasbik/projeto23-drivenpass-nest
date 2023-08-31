@@ -18,11 +18,12 @@ export class CredentialsService {
   ) {}
 
   async createCredential(body: CreateCredentialDto, user: User) {
-    const titleExists = await this.credentialsRepository.verifyTitleByUserId(
+    const title = await this.credentialsRepository.verifyTitleByUserId(
       user.id,
       body.title,
     );
-    if (titleExists) throw new ConflictException('This title already exists.');
+    if (title) throw new ConflictException('This title already exists.');
+
     const cryptr = new Cryptr(process.env.CRYPTR_SECRET);
     const credentialsPass = cryptr.encrypt(body.credentialsPass);
     const newBody = { ...body, credentialsPass };
@@ -62,8 +63,7 @@ export class CredentialsService {
   }
 
   async removeCredential(id: number, user: User) {
-    const credential = this.getOneCredential(user, id);
-    console.log(credential);
+    await this.getOneCredential(user, id);
     return await this.credentialsRepository.removeCredential(id, user.id);
   }
 }

@@ -1,29 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { CreateNoteDto } from './dto/create-note.dto';
-import { UpdateNoteDto } from './dto/update-note.dto';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class NotesRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createNoteDto: CreateNoteDto) {
-    return 'This action adds a new note';
+  verifyNoteByUserId(userId: number, title: string) {
+    return this.prisma.note.findFirst({ where: { title, userId } });
   }
 
-  findAll() {
-    return `This action returns all notes`;
+  createNote(body: CreateNoteDto, userId: number) {
+    return this.prisma.note.create({ data: { ...body, userId } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} note`;
+  getNotes(userId: number) {
+    return this.prisma.note.findMany({ where: { userId } });
   }
 
-  update(id: number, updateNoteDto: UpdateNoteDto) {
-    return `This action updates a #${id} note`;
+  getOneNote(id: number) {
+    return this.prisma.note.findUnique({ where: { id } });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} note`;
+  removeNote(id: number, userId: number) {
+    return this.prisma.note.delete({ where: { id, userId } });
   }
 }

@@ -22,11 +22,12 @@ export class UsersService {
   ) {}
 
   async signUp(body: CreateUserDto) {
-    const user = await this.usersRepository.findUserByEmail(body.email);
+    const { email, password } = body;
 
+    const user = await this.usersRepository.findUserByEmail(email);
     if (user) throw new ConflictException('Already existing email!');
 
-    const passCrypt = bcrypt.hashSync(body.password, 10);
+    const passCrypt = bcrypt.hashSync(password, 10);
     const signUp = await this.usersRepository.signUp({
       email: body.email,
       password: passCrypt,
@@ -37,11 +38,13 @@ export class UsersService {
   }
 
   async signIn(body: CreateUserDto) {
-    const user = await this.usersRepository.findUserByEmail(body.email);
+    const { email, password } = body;
+
+    const user = await this.usersRepository.findUserByEmail(email);
     if (!user)
       throw new UnauthorizedException('Invalid Email or Password information!');
 
-    const checkPass = bcrypt.compare(body.password, user.password);
+    const checkPass = bcrypt.compare(password, user.password);
     if (!checkPass)
       throw new UnauthorizedException('Invalid Email or Password information!');
 
