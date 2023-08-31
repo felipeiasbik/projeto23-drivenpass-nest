@@ -61,7 +61,9 @@ export class CredentialsService {
     };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} credential`;
+  async removeCredential(id: number, user: User) {
+    const credential = this.getOneCredential(user, id);
+    console.log(credential);
+    return await this.credentialsRepository.removeCredential(id, user.id);
   }
 }

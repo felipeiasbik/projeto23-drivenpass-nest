@@ -24,17 +24,17 @@ export class CredentialsController {
   }
 
   @Get()
-  getCredentials(@User() user) {
+  getCredentials(@User() user: UserClass) {
     return this.credentialsService.getCredentials(user);
   }
 
   @Get('/:id')
-  getOneCredential(@Param('id') id: string, @User() user) {
+  getOneCredential(@Param('id') id: string, @User() user: UserClass) {
     return this.credentialsService.getOneCredential(user, +id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.credentialsService.remove(+id);
+  removeCredential(@Param('id') id: string, @User() user: UserClass) {
+    return this.credentialsService.removeCredential(+id, user);
   }
 }

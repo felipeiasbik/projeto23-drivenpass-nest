@@ -27,10 +27,13 @@ export class UsersService {
     if (user) throw new ConflictException('Already existing email!');
 
     const passCrypt = bcrypt.hashSync(body.password, 10);
-    return await this.usersRepository.signUp({
+    const signUp = await this.usersRepository.signUp({
       email: body.email,
       password: passCrypt,
     });
+
+    delete signUp.password;
+    return signUp;
   }
 
   async signIn(body: CreateUserDto) {

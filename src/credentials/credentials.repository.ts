@@ -22,7 +22,7 @@ export class CredentialsRepository {
     return this.prisma.credential.findUnique({ where: { id } });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} credential`;
+  removeCredential(id: number, userId: number) {
+    return this.prisma.credential.delete({ where: { id, userId } });
   }
 }
