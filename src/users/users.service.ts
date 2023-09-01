@@ -44,7 +44,7 @@ export class UsersService {
     if (!user)
       throw new UnauthorizedException('Invalid Email or Password information!');
 
-    const checkPass = bcrypt.compare(password, user.password);
+    const checkPass = bcrypt.compareSync(password, user.password);
     if (!checkPass)
       throw new UnauthorizedException('Invalid Email or Password information!');
 
@@ -78,5 +78,9 @@ export class UsersService {
     const user = await this.usersRepository.getUserById(id);
     if (!user) throw new NotFoundException('User not found!');
     return user;
+  }
+
+  async deleteUser(id: number) {
+    return await this.usersRepository.deleteUser(id);
   }
 }

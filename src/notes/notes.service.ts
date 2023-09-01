@@ -38,4 +38,8 @@ export class NotesService {
     await this.getOneNote(id, user);
     return await this.notesRepository.removeNote(id, user.id);
   }
+
+  async removeUserNotes(userId: number) {
+    return await this.notesRepository.removeUserNotes(userId);
+  }
 }

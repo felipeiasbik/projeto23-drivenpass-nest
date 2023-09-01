@@ -17,4 +17,8 @@ export class UsersRepository {
   getUserById(id: number) {
     return this.prisma.user.findUnique({ where: { id } });
   }
+
+  deleteUser(id: number) {
+    return this.prisma.user.delete({ where: { id } });
+  }
 }

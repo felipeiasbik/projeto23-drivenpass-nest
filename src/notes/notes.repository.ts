@@ -25,4 +25,8 @@ export class NotesRepository {
   removeNote(id: number, userId: number) {
     return this.prisma.note.delete({ where: { id, userId } });
   }
+
+  removeUserNotes(userId: number) {
+    return this.prisma.note.deleteMany({ where: { userId } });
+  }
 }

@@ -12,7 +12,9 @@ import { CreateCredentialDto } from './dto/create-credential.dto';
 import { AuthGuard } from '../guards/auth.guard';
 import { User } from '../decorators/user.decorator';
 import { User as UserClass } from '@prisma/client';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('credentials')
 @UseGuards(AuthGuard)
 @Controller('/credentials')
 export class CredentialsController {

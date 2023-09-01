@@ -40,4 +40,8 @@ export class CardsRepository {
   removeCard(id: number, userId: number) {
     return this.prisma.card.delete({ where: { id, userId } });
   }
+
+  removeUserCards(userId: number) {
+    return this.prisma.card.deleteMany({ where: { userId } });
+  }
 }

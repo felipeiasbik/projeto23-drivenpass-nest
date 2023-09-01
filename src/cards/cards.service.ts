@@ -73,4 +73,8 @@ export class CardsService {
     await this.getCard(id, user);
     return await this.cardsRepository.removeCard(id, user.id);
   }
+
+  async removeUserCards(userId: number) {
+    return await this.cardsRepository.removeUserCards(userId);
+  }
 }

@@ -5,13 +5,15 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
+import { Request, Response } from 'express';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(private usersService: UsersService) {}
 
   async canActivate(context: ExecutionContext) {
-    const request = context.switchToHttp().getRequest();
+    const request = context.switchToHttp().getRequest<Request>();
+    const response = context.switchToHttp().getResponse<Response>();
     const { authorization } = request.headers;
 
     try {
@@ -19,7 +21,7 @@ export class AuthGuard implements CanActivate {
         (authorization ?? '').split(' ')[1],
       );
       const user = await this.usersService.getUserById(parseInt(data.sub));
-      request.user = user;
+      response.locals.user = user;
       return true;
     } catch (error) {
       throw new UnauthorizedException();

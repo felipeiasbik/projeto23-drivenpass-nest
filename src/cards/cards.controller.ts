@@ -12,7 +12,9 @@ import { CreateCardDto } from './dto/create-card.dto';
 import { AuthGuard } from '../guards/auth.guard';
 import { User } from '../decorators/user.decorator';
 import { User as UserClass } from '@prisma/client';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('cards')
 @UseGuards(AuthGuard)
 @Controller('cards')
 export class CardsController {

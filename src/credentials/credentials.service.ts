@@ -66,4 +66,8 @@ export class CredentialsService {
     await this.getOneCredential(user, id);
     return await this.credentialsRepository.removeCredential(id, user.id);
   }
+
+  async removeUserCredentials(userId: number) {
+    return await this.credentialsRepository.removeUserCredentials(userId);
+  }
 }

@@ -6,11 +6,11 @@ import {
 
 export const User = createParamDecorator(
   (data: string, context: ExecutionContext) => {
-    const request = context.switchToHttp().getRequest();
-    if (!request.user) {
+    const response = context.switchToHttp().getResponse();
+    if (!response.locals.user) {
       throw new NotFoundException('User not found.');
     }
 
-    return request.user;
+    return response.locals.user;
   },
 );
