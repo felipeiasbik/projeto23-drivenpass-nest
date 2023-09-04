@@ -19,4 +19,8 @@ export class CreateUserDto {
       'Password with a minimum of 10 characters, containing uppercase and lowercase letters, symbol and number.',
   })
   password: string;
+
+  constructor(params?: Partial<CreateUserDto>) {
+    if (params) Object.assign(this, params);
+  }
 }
