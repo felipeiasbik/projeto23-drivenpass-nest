@@ -4,14 +4,13 @@ import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { PrismaService } from '../src/prisma/prisma.service';
 import { E2EUtils } from './utils/e2e-utils';
-import { UsersFactories } from './factories/users.factory';
 import { CreateUserDto } from '../src/users/dto/create-user.dto';
 import { faker } from '@faker-js/faker';
-import { User } from '@prisma/client';
 
 describe('User (e2e) Tests', () => {
   let app: INestApplication;
-  const prisma: PrismaService = new PrismaService();
+  let prisma: PrismaService;
+  let server: request.SuperTest<request.Test>;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -23,51 +22,99 @@ describe('User (e2e) Tests', () => {
 
     app = moduleFixture.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
+    prisma = app.get(PrismaService);
+
+    await E2EUtils.cleanDb(prisma);
 
     await app.init();
-    await E2EUtils.cleanDb(prisma);
+    server = request(app.getHttpServer());
   });
 
   afterAll(async () => {
     await prisma.$disconnect();
   });
 
-  it('POST /users => should create a user', async () => {
-    const userDto: CreateUserDto = new CreateUserDto();
-    userDto.email = faker.internet.email();
-    userDto.password = 'S@nh@F1rt@';
+  describe('POST /users => should create a user', () => {
+    it('should create a user', async () => {
+      const createUserDto: CreateUserDto = {
+        email: faker.internet.email(),
+        password: 'S@nh@F1rt@',
+      };
 
-    await request(app.getHttpServer())
-      .post('/users/sign-up')
-      .send(userDto)
-      .expect(HttpStatus.CREATED);
+      const { status } = await server
+        .post('/users/sign-up')
+        .send(createUserDto);
+      expect(status).toBe(HttpStatus.CREATED);
 
-    const users = await prisma.user.findMany();
-    expect(users).toHaveLength(1);
-    const user = users[0];
-    expect(user).toEqual<User>({
-      id: expect.any(Number),
-      email: expect.any(String),
-      password: expect.any(String),
-      createdAt: expect.any(Date),
-      updatedAt: expect.any(Date),
-    });
-  });
-
-  it('POST /users => should login a user', async () => {
-    await new UsersFactories(prisma)
-      .withEmail('testando@testando.com')
-      .withPassword('S1nh@F@rt@')
-      .persist();
-
-    const userDto: CreateUserDto = new CreateUserDto({
-      email: 'testando@testando.com',
-      password: 'S1nh@F@rt@',
+      const users = await prisma.user.findMany();
+      expect(users).toHaveLength(1);
+      const user = users[0];
+      expect(user).toEqual({
+        id: expect.any(Number),
+        email: expect.any(String),
+        password: expect.any(String),
+        createdAt: expect.any(Date),
+        updatedAt: expect.any(Date),
+      });
     });
 
-    await request(app.getHttpServer())
-      .post('/users/sign-in')
-      .send(userDto)
-      .expect(HttpStatus.CONFLICT);
+    it('should respond with 400 if password is not security', async () => {
+      const createUserDto: CreateUserDto = {
+        email: 'myEmail@test.com',
+        password: 'pass',
+      };
+
+      await prisma.user.create({ data: createUserDto });
+
+      const { status } = await server
+        .post('/users/sign-up')
+        .send(createUserDto);
+      expect(status).toBe(HttpStatus.BAD_REQUEST);
+    });
+
+    it('should respond with 409 if already exists email', async () => {
+      const createUserDto: CreateUserDto = {
+        email: 'myEmail@test.com',
+        password: 'S@nh@F1rt@',
+      };
+
+      await prisma.user.create({ data: createUserDto });
+
+      const { status } = await server
+        .post('/users/sign-up')
+        .send(createUserDto);
+      expect(status).toBe(HttpStatus.CONFLICT);
+    });
+
+    it('should respond with 200 if login is successful', async () => {
+      const createUserDto: CreateUserDto = {
+        email: 'myEmail@test.com',
+        password: 'S#nh#F1rt#',
+      };
+
+      await server.post('/users/sign-up').send(createUserDto);
+
+      const { status, body } = await server
+        .post('/users/sign-in')
+        .send(createUserDto);
+      expect(status).toBe(HttpStatus.OK);
+      expect(body).toEqual({
+        token: expect.any(String),
+      });
+    });
+
+    it('should respond with 401 if login details are incorrect', async () => {
+      const createUserDto: CreateUserDto = {
+        email: 'myEmail@test.com',
+        password: 'S#nh#F1rt#',
+      };
+
+      await server.post('/users/sign-up').send(createUserDto);
+
+      const { status } = await server
+        .post('/users/sign-in')
+        .send({ email: 'other@mail.com', password: 'Fakepass#1' });
+      expect(status).toBe(HttpStatus.UNAUTHORIZED);
+    });
   });
 });

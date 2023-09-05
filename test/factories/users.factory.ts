@@ -1,30 +1,19 @@
+import { faker } from '@faker-js/faker';
 import { PrismaService } from '../../src/prisma/prisma.service';
+import { CreateUserDto } from '../../src/users/dto/create-user.dto';
 
 export class UsersFactories {
-  private email: string;
-  private password: string;
+  async createUser(prisma: PrismaService) {
+    const userDto: CreateUserDto = new CreateUserDto();
+    userDto.email = faker.internet.email();
+    userDto.password = 'S@nh@F1rt@';
 
-  constructor(private readonly prisma: PrismaService) {}
-
-  withEmail(email: string) {
-    this.email = email;
-    return this;
-  }
-
-  withPassword(password: string) {
-    this.password = password;
-    return this;
-  }
-
-  build() {
-    return {
-      email: this.email,
-      password: this.password,
-    };
-  }
-
-  async persist() {
-    const user = this.build();
-    return await this.prisma.user.create({ data: user });
+    const result = await prisma.user.create({
+      data: {
+        email: userDto.email,
+        password: userDto.password,
+      },
+    });
+    return result;
   }
 }
