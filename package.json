@@ -17,9 +17,9 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:load-envs": "dotenv -e .env.test",
     "test:prisma": "npm run test:load-envs prisma migrate deploy",
-    "test:e2e": "npm run test:load-envs -- jest -- --watch --runInBand --config ./test/jest-e2e.json",
+    "test:load-envs": "dotenv -e .env.test jest -- --watch --runInBand --config ./test/jest-e2e.json cards",
+    "test:e2e": "npm run test:load-envs",
     "prisma:prod": "npx prisma migrate deploy",
     "prisma:prod:seed": "npx prisma db seed"
   },
