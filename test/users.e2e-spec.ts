@@ -34,8 +34,8 @@ describe('User (e2e) Tests', () => {
     await prisma.$disconnect();
   });
 
-  describe('POST /users => should create a user', () => {
-    it('should create a user', async () => {
+  describe('POST /users/sign-up', () => {
+    it('should respond with 201 and create a user', async () => {
       const createUserDto: CreateUserDto = {
         email: faker.internet.email(),
         password: 'S@nh@F1rt@',
@@ -64,7 +64,7 @@ describe('User (e2e) Tests', () => {
         password: 'pass',
       };
 
-      await prisma.user.create({ data: createUserDto });
+      await server.post('/users/sign-up').send(createUserDto);
 
       const { status } = await server
         .post('/users/sign-up')
@@ -78,14 +78,16 @@ describe('User (e2e) Tests', () => {
         password: 'S@nh@F1rt@',
       };
 
-      await prisma.user.create({ data: createUserDto });
+      await server.post('/users/sign-up').send(createUserDto);
 
       const { status } = await server
         .post('/users/sign-up')
         .send(createUserDto);
       expect(status).toBe(HttpStatus.CONFLICT);
     });
+  });
 
+  describe('POST /users/sign-in', () => {
     it('should respond with 200 if login is successful', async () => {
       const createUserDto: CreateUserDto = {
         email: 'myEmail@test.com',
