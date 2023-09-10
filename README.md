@@ -43,28 +43,33 @@ CRYPTR_SECRET=CHAVE_SECRETA_EXEMPLO_#$1234abcd
 
 ### Para rodar o projeto:
 
+###### Desenvolvimento:
+
 ```
-# development
-$ npm run start
+npm run start
+```
 
-# watch mode
-$ npm run start:dev
+###### Modo de visualização:
+```
+npm run start:dev
+```
 
-# production mode
-$ npm run start:prod
+###### Modo de produção:
+```
+npm run start:prod
 ```
 
 ### Para testar o projeto:
 
+###### Testes e2e:
+
 ```
-# unit tests
-$ npm run test
+npm run test:e2e
+```
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+###### Testes de cobertura:
+```
+npm run test:cov
 ```
 
 
