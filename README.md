@@ -1,7 +1,7 @@
-# Driven Pass (Back-end) 
+# DrivenPass (Back-end) 
 <img src="https://notion-emojis.s3-us-west-2.amazonaws.com/prod/svg-twitter/1f512.svg" alt="Driven Pass Logo" width="37" height="40">
 
-##### Neste repositório você encontrará a API de um gerenciador de senhas. O projeto permite utilizar-se de uma senha mestre segura, armezenando outras de diferentes plataformas. Este repositório contém o código-fonte do back-end do projeto.
+##### Neste repositório você encontrará a API de um gerenciador de senhas. A aplicação permite utilizar-se de uma senha mestre segura, armezenando outras de diferentes plataformas. Este repositório contém o código-fonte do back-end do projeto.
 
 ### Visão Geral
 
@@ -10,6 +10,8 @@ O Driven Pass é uma aplicação que permite ao usuário acessar de forma segura
 Este projeto foi construído por:
 
 - [Felipe Iasbik](https://github.com/felipeiasbik)
+
+A **documentação oficial** pode ser acessada [aqui](https://drivenpass-e6yq.onrender.com/api).
 
 ### Principais recursos:
 
