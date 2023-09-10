@@ -22,9 +22,7 @@ A **documentação oficial** pode ser acessada [aqui](https://drivenpass-e6yq.on
 - Registro, busca e deleção de cartões;
 
 
-O projeto ainda conta com testes automatizados e documentação descrevendo os recursos.
-
-:)
+O projeto ainda conta com testes automatizados e documentação descrevendo os recursos. :)
 
 ### Como utilizar:
 - Clone o repositório;
