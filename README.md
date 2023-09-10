@@ -25,14 +25,14 @@ O projeto ainda conta com testes automatizados e documentação descrevendo os r
 :)
 
 ### Como utilizar:
-- Clone o repositório
+- Clone o repositório;
 - Digite o seguinte comando na raíz do projeto:
 
   ```
   npm i
   ```
-- Crie um arquivo .env
-- Crie um banco de dados no PostgreSQL.
+- Crie um arquivo .env;
+- Crie um banco de dados no PostgreSQL;
 - O seu arquivo .env deverá ficar da seguinte forma:
 
 ```
