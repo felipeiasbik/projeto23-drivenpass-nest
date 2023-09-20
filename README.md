@@ -1,7 +1,9 @@
 # DrivenPass (Back-end) 
 <img src="https://notion-emojis.s3-us-west-2.amazonaws.com/prod/svg-twitter/1f512.svg" alt="Driven Pass Logo" width="37" height="40">
 
-##### Neste repositório você encontrará a API de um gerenciador de senhas. A aplicação permite utilizar-se de uma senha mestre segura, armezenando outras de diferentes plataformas. Este repositório contém o código-fonte do back-end do projeto.
+##### Neste repositório você encontrará a API de um gerenciador de senhas. A aplicação permite utilizar-se de uma senha mestre segura, armazenando outras de diferentes plataformas. Este repositório contém o código-fonte do back-end do projeto.
+
+##### Algumas tecnologias usadas no projeto: *Node.js, Nest.js, TypeScript, Prisma e Jest*.
 
 ### Visão Geral
 
